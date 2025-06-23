@@ -8,7 +8,6 @@ Este repositorio contiene:
 - 🎭 **Spoofing ARP** unidireccional (DoS) contra un host, ideal para simular ataques MITM en laboratorio.
 
 > ⚠️ **Uso exclusivo con fines educativos.**  
-> Ejecutar estas herramientas en redes no autorizadas **es ilegal**.
 
 ---
 
