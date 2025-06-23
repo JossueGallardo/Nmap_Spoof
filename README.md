@@ -41,6 +41,10 @@ git clone https://github.com/JossueGallardo/Nmap_Spoof.git
 ```bash
 # Instalar dependencias (Debian/Kali)
 sudo apt update
+```
+
+```bash
+# Instalar dependencias (Debian/Kali)
 sudo apt install nmap dsniff iproute2 gawk
 ```
 
