@@ -1,85 +1,88 @@
 # 🔍 Escáner y Spoofer de Red LAN – JossueGallardo
 
-Herramientas en **Bash** diseñadas para auditorías de red y análisis de seguridad en entornos controlados.
+Herramientas **Bash** para auditorías de red y pruebas de seguridad en entornos controlados.
 
-Este repositorio contiene:
+| Herramienta | Descripción |
+|-------------|-------------|
+| 🛰️ **LAN Scanner** | Interactivo (Nmap). Detecta interfaz, IP local/máscara y ofrece 4 modos: rápido, extendido, individual y *vuln-scan*. |
+| 🎭 **ARP Spoofer (DoS)** | Envenenamiento unidireccional de caché ARP mediante `arpspoof`; provoca pérdida de conectividad de la víctima. |
 
-- 🛰️ **Escáner de red LAN** interactivo (basado en **Nmap**) con modos de análisis rápido, extendido, individual y de vulnerabilidades.  
-- 🎭 **Spoofing ARP** unidireccional (DoS) contra un host, ideal para simular ataques MITM en laboratorio.
-
-> ⚠️ **Uso exclusivo con fines educativos.**  
-
----
-
-## 📁 Contenido del Repositorio
-
-| Archivo           | Descripción                                                                      |
-|-------------------|----------------------------------------------------------------------------------|
-| `escanear_red.sh` | Escáner interactivo de red LAN usando `nmap`.                                    |
-| `spoof.sh`        | Script básico para ataque ARP spoofing (DoS) usando `arpspoof`.                  |
-| `README.md`       | Este archivo.                                                                    |
+> ⚠️ **Uso exclusivamente educativo.**
 
 ---
 
-## ⚙️ Requisitos
+## 📁 Estructura
 
-- [`nmap`](https://nmap.org) — para escanear dispositivos.  
-- [`dsniff`](https://linux.die.net/man/8/arpspoof) — incluye `arpspoof` para ataques ARP.  
-- Distribución GNU/Linux basada en Debian (p. ej. **Kali Linux**).  
-- Permisos de **superusuario** (`root` o `sudo`).
-
-Instalación rápida:
-
-    sudo apt update
-    sudo apt install nmap dsniff
+| Archivo            | Descripción                              |
+|--------------------|------------------------------------------|
+| `escanear_red.sh`  | Escáner interactivo de red LAN.          |
+| `spoof.sh`         | Ataque ARP spoofing (DoS).               |
+| `README.md`        | Este documento.                          |
 
 ---
+
+## ⚙️ Dependencias
+
+| Paquete   | Motivo                                 |
+|-----------|----------------------------------------|
+| `nmap`    | Escaneo de hosts y puertos             |
+| `dsniff`  | Incluye `arpspoof`                     |
+| `iproute2`| Comandos `ip route` / `ip addr`        |
+| `awk`     | Filtros de texto                       |
+| `bash ≥4` | Arrays y mejoras de sintaxis           |
+
+### Instalación rápida
+
+```bash
+# Clonar repositorio
+git clone https://github.com/JossueGallardo/Nmap_Spoof.git
+
+# Instalar dependencias (Debian/Kali)
+sudo apt update
+sudo apt install nmap dsniff iproute2 gawk
+
+# Dar permisos de ejecución
+chmod +x escanear_red.sh spoof.sh
 
 ## 🧪 Uso
 
-### 🔢 1. Escáner de Red
+### 1️⃣ Escáner de Red
 
-Ejecuta el script:
+```bash
+sudo bash escanear_red.sh
+```
 
-    sudo bash escanear_red.sh
-
-**Opciones disponibles**
-
-    1) Escaneo rápido (solo IPs activas)
-    2) Escaneo extendido (puertos, SO y servicios)
-    3) Escaneo individual a una IP
-    4) Escaneo de vulnerabilidades en un host
-
-**El script detecta:**
-
-- La **interfaz de red** activa.  
-- La **IP local** y la **máscara** (CIDR).  
-- El **rango completo** o la **IP puntual** según el modo seleccionado.  
-- Permite **volver al menú** o **salir** tras cada escaneo.
+| Opción | Descripción                           | Flags Nmap           |
+|-------:|---------------------------------------|----------------------|
+| 1      | Rápido — solo IPs activas             | `-sn`                |
+| 2      | Extend. — puertos/SO/servicios        | `-A`                 |
+| 3      | Host único extendido                  | `-A <IP>`            |
+| 4      | Scripts de vulnerabilidad             | `--script vuln <IP>` |
 
 ---
 
-### 💥 2. Ataque ARP Spoofing (DoS)
+### 2️⃣ ARP Spoofing (DoS)
 
-Ejecuta el script:
+```bash
+sudo bash spoof.sh
+```
 
-    sudo bash spoof.sh
+**Pasos interactivos**
 
-El script te pedirá:
+1. Introducir la **interfaz** (`eth0`, `wlan0`, …).  
+2. Introducir la **IP objetivo**.  
+3. El script detecta automáticamente la puerta de enlace y ejecuta:
 
-- ✅ **Interfaz de red** (p. ej. `eth0`, `wlan0`).  
-- ✅ **IP del dispositivo objetivo**.
+```bash
+arpspoof -i <iface> -t <victima> <gateway>
+```
 
-Luego:
-
-- 🧠 Detecta automáticamente la **gateway** y realiza un **spoofing ARP unidireccional**, haciéndose pasar por el router ante el objetivo.  
-- ✂️ Esto provoca **pérdida de conectividad (DoS)** en la víctima.  
-- ❗ No implementa spoof bidireccional (MITM completo); es una **denegación básica de servicio** para demostraciones.
+> Nota: se valida el formato de IP y, si falta `dsniff`, el script aborta con un mensaje claro.
 
 ---
 
 ## 🛡️ Advertencia Legal
 
-Estas herramientas fueron creadas **solo con fines educativos** y deben usarse **únicamente** en redes propias o en entornos con autorización explícita.
+Estas herramientas se proporcionan **solo con fines educativos** y deben usarse **exclusivamente** en redes propias o con permiso expreso.  
+**No me hago responsable** del uso indebido.
 
-🚫 **Prohibido** su uso en redes ajenas sin consentimiento.
