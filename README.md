@@ -36,13 +36,18 @@ Herramientas **Bash** para auditorías de red y pruebas de seguridad en entornos
 ```bash
 # Clonar repositorio
 git clone https://github.com/JossueGallardo/Nmap_Spoof.git
+```
 
+```bash
 # Instalar dependencias (Debian/Kali)
 sudo apt update
 sudo apt install nmap dsniff iproute2 gawk
+```
 
+```bash
 # Dar permisos de ejecución
 chmod +x escanear_red.sh spoof.sh
+```
 
 ## 🧪 Uso
 
